@@ -1,202 +1,191 @@
 # AWS Serverless Contact Form
 
-This project demonstrates a serverless backend for a contact form built using Amazon API Gateway, AWS Lambda, and DynamoDB.
+![Architecture Diagram](architecture.png)
 
-The backend powers the contact form on my portfolio website, allowing users to submit messages which are processed by Lambda and stored in DynamoDB.
+A serverless contact form backend built using **Amazon API Gateway, AWS Lambda, and DynamoDB**.  
+This backend powers the **contact form on my portfolio website**, allowing users to submit messages that are processed by Lambda and stored in DynamoDB.
 
-Live Portfolio  
+🌐 Live Portfolio  
 https://dc61g20ci9ox4.cloudfront.net/
 
+---
 
---------------------------------------------------
+# Architecture Overview
 
-ARCHITECTURE OVERVIEW
-
-The contact form follows a serverless architecture:
+This project uses a fully **serverless architecture**.
 
 User → Portfolio Website → API Gateway → Lambda → DynamoDB → CloudWatch Logs
 
-![Architecture Diagram](architecture.png)
+The system processes contact form submissions and securely stores them without managing any servers.
 
+---
 
---------------------------------------------------
+# AWS Services Used
 
-AWS SERVICES USED
+- Amazon API Gateway
+- AWS Lambda
+- Amazon DynamoDB
+- AWS IAM
+- Amazon CloudWatch
+- Amazon S3 (Portfolio hosting)
+- Amazon CloudFront (Content delivery)
 
-* Amazon API Gateway  
-* AWS Lambda  
-* Amazon DynamoDB  
-* AWS IAM  
-* Amazon CloudWatch  
-* Amazon S3 (Portfolio hosting)  
-* Amazon CloudFront (Content delivery)
+---
 
+# Workflow
 
---------------------------------------------------
+1. A user submits the contact form on the portfolio website.
+2. The form sends a **POST request** to API Gateway.
+3. API Gateway triggers **AWS Lambda**.
+4. Lambda validates and processes the request.
+5. Lambda stores the message in **DynamoDB**.
+6. Logs are recorded in **CloudWatch Logs** for monitoring.
 
-WORKFLOW
+---
 
-1. User submits contact form on the portfolio website
-2. Form sends a POST request to API Gateway
-3. API Gateway triggers AWS Lambda
-4. Lambda validates and processes the request
-5. Lambda stores the message in DynamoDB
-6. Execution logs are stored in CloudWatch
+# API Gateway Configuration
 
+API Gateway exposes an endpoint that receives the form submission.
 
---------------------------------------------------
+### API Routes
 
-API GATEWAY CONFIGURATION
+![API Gateway Routes](api-gateway-routes.png)
 
-API Gateway exposes an endpoint for the contact form submission.
+### Lambda Integration
 
-API Gateway Routes Screenshot
+![API Gateway Integration](api-gateway-integration.png)
 
-![API Gateway Routes](API-Gateway-Routes.png)
+---
 
+# Lambda Function
 
-API Gateway Lambda Integration Screenshot
+The Lambda function processes incoming requests and stores form data in DynamoDB.
 
-![API Gateway Integration](API-Gateway-Integration.png)
+![Lambda Function](lambda.png)
 
+Main responsibilities:
 
---------------------------------------------------
+- Parse request body
+- Validate form data
+- Generate a unique ID
+- Store message in DynamoDB
+- Return success response
 
-LAMBDA FUNCTION
+---
 
-The Lambda function processes the request and stores the data in DynamoDB.
-
-![Lambda Function](Lambda.png)
-
-The function performs the following tasks:
-
-- Parses request body
-- Validates form input
-- Generates unique submission ID
-- Stores message in DynamoDB
-- Returns success response
-
-
---------------------------------------------------
-
-DYNAMODB TABLE
+# DynamoDB Table
 
 Contact form submissions are stored in a DynamoDB table.
 
-![DynamoDB Table](DynamoDB.png)
-
-
-Stored Items Example
+![DynamoDB Table](dynamodb.png)
 
 Each submission includes:
 
-ID  
-Name  
-Email  
-Message  
-Timestamp
+- ID
+- Name
+- Email
+- Message
+- Timestamp
+
+### Stored Items Example
 
 ![DynamoDB Items](dynamodb-items.png)
 
+---
 
---------------------------------------------------
+# CloudWatch Logs
 
-CLOUDWATCH LOGS
-
-CloudWatch logs are used for monitoring and troubleshooting Lambda execution.
+CloudWatch logs are used to monitor and troubleshoot Lambda execution.
 
 ![CloudWatch Logs](cloudwatch-logs.png)
 
+Logs help identify errors and verify successful form submissions.
 
---------------------------------------------------
+---
 
-SECURITY IMPLEMENTATION
+# Security Implementation
 
 This project follows AWS security best practices:
 
-- IAM role with least privilege  
-- Lambda allowed only dynamodb:PutItem  
-- Input validation inside Lambda  
+- IAM role with **least privilege**
+- Lambda allowed only **dynamodb:PutItem**
+- Input validation inside Lambda
 - Hidden honeypot field used in the contact form to reduce spam
 
+---
 
---------------------------------------------------
+# Challenges and Troubleshooting
 
-CHALLENGES AND TROUBLESHOOTING
+## API Deployment Issue
 
-
-- API Deployment Issue
-
-Error:
-Unable to deploy API because no valid routes exist
-
-Fix:
-Configured proper POST route and Lambda integration.
+Error: Unable to deploy API because no valid routes exist
 
 
-- DynamoDB Permission Error
+Fix: Configured the correct **POST route and Lambda integration**.
 
-Error:
-AccessDeniedException: dynamodb:PutItem
+---
 
-Fix:
-Updated Lambda IAM role policy to allow DynamoDB PutItem.
+## DynamoDB Permission Error
 
+Error: AccessDeniedException: dynamodb:PutItem
 
-- API Testing Error
+Fix: Updated the **Lambda IAM role policy** to allow DynamoDB PutItem.
 
-Error:
-Invoke-RestMethod : {"message":"Not Found"}
+---
 
-Fix:
-Used the correct API Gateway invoke URL and route path.
+## API Testing Error
 
+Error: Invoke-RestMethod : {"message":"Not Found"}
 
---------------------------------------------------
+Fix: Used the correct **API Gateway invoke URL and route path**.
 
-PROJECT STRUCTURE
+---
 
+# Project Structure
 aws-serverless-contact-form
+│
+├── architecture.png
+├── api-gateway-routes.png
+├── api-gateway-integration.png
+├── lambda.png
+├── dynamodb.png
+├── dynamodb-items.png
+├── cloudwatch-logs.png
+├── lambda_function.py
+└── README.md
 
-- lambda_function.py  
-- architecture.png  
-- API-Gateway-Routes.png  
-- API-Gateway-Integration.png  
-- Lambda.png  
-- DynamoDB.png  
-- dynamodb-items.png  
-- cloudwatch-logs.png  
+---
 
+# Future Improvements
 
---------------------------------------------------
+Planned enhancements:
 
-FUTURE IMPROVEMENTS
+- Email notifications using **Amazon SES**
+- Input validation improvements
+- Rate limiting
+- CAPTCHA protection
+- Monitoring using **CloudWatch Alarms**
 
-- Email notifications using Amazon SES  
-- Input validation improvements  
-- Rate limiting  
-- CAPTCHA protection  
-- Monitoring with CloudWatch alarms  
+---
 
+# Key Learnings
 
---------------------------------------------------
+- Building serverless APIs with API Gateway
+- Integrating Lambda with DynamoDB
+- Implementing IAM least privilege policies
+- Debugging applications with CloudWatch logs
+- Designing end-to-end serverless architectures
 
-KEY LEARNINGS
+---
 
-- Building serverless APIs with API Gateway  
-- Integrating Lambda with DynamoDB  
-- IAM least privilege policies  
-- Debugging using CloudWatch logs  
-- End-to-end AWS serverless architecture  
+# Author
 
-
---------------------------------------------------
-
-AUTHOR
-
-Jayveersinh Vihol
+**Jayveersinh Vihol**
 
 AWS Cloud Practitioner | Aspiring Cloud Engineer
 
 Portfolio  
 https://dc61g20ci9ox4.cloudfront.net/
+
+
+
