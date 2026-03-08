@@ -52,7 +52,7 @@ API Gateway exposes an endpoint for the contact form submission.
 
 API Gateway Routes Screenshot
 
-![API Gateway Routes](API-GatewayRoutes.png)
+![API Gateway Routes](API-Gateway-Routes.png)
 
 
 API Gateway Lambda Integration Screenshot
