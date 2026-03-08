@@ -2,21 +2,22 @@
 
 ![Architecture Diagram](architecture.png)
 
-A serverless contact form backend built using **Amazon API Gateway, AWS Lambda, and DynamoDB**.  
-This backend powers the **contact form on my portfolio website**, allowing users to submit messages that are processed by Lambda and stored in DynamoDB.
+A serverless contact form backend built using **Amazon API Gateway, AWS Lambda, and DynamoDB**.
 
-🌐 Live Portfolio  
+This backend powers the **contact form on my portfolio website**, allowing users to submit messages which are processed by Lambda and stored in DynamoDB.
+
+🌐 **Live Portfolio**  
 https://dc61g20ci9ox4.cloudfront.net/
 
 ---
 
 # Architecture Overview
 
-This project uses a fully **serverless architecture**.
+This project follows a **serverless architecture** where the contact form sends requests to an API that triggers Lambda to store submissions in DynamoDB.
+
+Workflow:
 
 User → Portfolio Website → API Gateway → Lambda → DynamoDB → CloudWatch Logs
-
-The system processes contact form submissions and securely stores them without managing any servers.
 
 ---
 
@@ -39,19 +40,19 @@ The system processes contact form submissions and securely stores them without m
 3. API Gateway triggers **AWS Lambda**.
 4. Lambda validates and processes the request.
 5. Lambda stores the message in **DynamoDB**.
-6. Logs are recorded in **CloudWatch Logs** for monitoring.
+6. Execution logs are stored in **CloudWatch Logs** for monitoring and troubleshooting.
 
 ---
 
 # API Gateway Configuration
 
-API Gateway exposes an endpoint that receives the form submission.
+API Gateway exposes an endpoint to receive form submissions.
 
-### API Routes
+### API Gateway Routes
 
 ![API Gateway Routes](API-Gateway-Routes.png)
 
-### Lambda Integration
+### API Gateway Integration
 
 ![API Gateway Integration](API-Gateway-Integration.png)
 
@@ -59,16 +60,16 @@ API Gateway exposes an endpoint that receives the form submission.
 
 # Lambda Function
 
-The Lambda function processes incoming requests and stores form data in DynamoDB.
+The Lambda function processes the incoming request and stores form submissions in DynamoDB.
 
 ![Lambda Function](Lambda.png)
 
-Main responsibilities:
+Responsibilities of the Lambda function:
 
 - Parse request body
-- Validate form data
-- Generate a unique ID
-- Store message in DynamoDB
+- Validate input data
+- Generate unique submission ID
+- Store submission in DynamoDB
 - Return success response
 
 ---
@@ -79,7 +80,7 @@ Contact form submissions are stored in a DynamoDB table.
 
 ![DynamoDB Table](DynamoDB.png)
 
-Each submission includes:
+Each stored record contains:
 
 - ID
 - Name
@@ -95,11 +96,11 @@ Each submission includes:
 
 # CloudWatch Logs
 
-CloudWatch logs are used to monitor and troubleshoot Lambda execution.
+CloudWatch logs help monitor Lambda execution and troubleshoot issues.
 
 ![CloudWatch Logs](cloudwatch-logs.png)
 
-Logs help identify errors and verify successful form submissions.
+Logs confirm successful processing of form submissions.
 
 ---
 
@@ -109,67 +110,111 @@ This project follows AWS security best practices:
 
 - IAM role with **least privilege**
 - Lambda allowed only **dynamodb:PutItem**
-- Input validation inside Lambda
-- Hidden honeypot field used in the contact form to reduce spam
+- Input validation in Lambda
+- Hidden honeypot field in the contact form to prevent spam
 
 ---
 
-# Challenges and Troubleshooting
+# Sample Request Payload
 
-## API Deployment Issue
+Example payload sent from the contact form to API Gateway:
 
-Error: Unable to deploy API because no valid routes exist
-
-
-Fix: Configured the correct **POST route and Lambda integration**.
-
----
-
-## DynamoDB Permission Error
-
-Error: AccessDeniedException: dynamodb:PutItem
-
-Fix: Updated the **Lambda IAM role policy** to allow DynamoDB PutItem.
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "Hello, this is a test message."
+}
+```
 
 ---
 
-## API Testing Error
+# How to Test
 
-Error: Invoke-RestMethod : {"message":"Not Found"}
+1. Open the portfolio website:  
+   https://dc61g20ci9ox4.cloudfront.net/
 
-Fix: Used the correct **API Gateway invoke URL and route path**.
+2. Navigate to the **Contact** section.
+
+3. Submit a test message using the form.
+
+4. Verify that the message appears in the **DynamoDB table**.
+
+5. Check **CloudWatch Logs** to confirm Lambda execution.
+
+---
+
+# Challenges & Troubleshooting
+
+### API Deployment Issue
+
+Error:
+
+```
+Unable to deploy API because no valid routes exist
+```
+
+Fix:
+
+Configured the correct **POST route and Lambda integration**.
+
+---
+
+### DynamoDB Permission Error
+
+Error:
+
+```
+AccessDeniedException: dynamodb:PutItem
+```
+
+Fix:
+
+Updated the **Lambda IAM role policy** to allow DynamoDB PutItem.
+
+---
+
+### API Testing Error
+
+Error:
+
+```
+Invoke-RestMethod : {"message":"Not Found"}
+```
+
+Fix:
+
+Used the correct **API Gateway endpoint and route path**.
 
 ---
 
 # Project Structure
+
 ```
 aws-serverless-contact-form/
 │
 ├── README.md
 ├── lambda_function.py
-│
-├── architecture/
-│ └── architecture.png
-│
-├── screenshots/
-│ ├── api-gateway-routes.png
-│ ├── api-gateway-integration.png
-│ ├── lambda.png
-│ ├── dynamodb.png
-│ ├── dynamodb-items.png
-│ └── cloudwatch-logs.png
+├── architecture.png
+├── API-Gateway-Routes.png
+├── API-Gateway-Integration.png
+├── Lambda.png
+├── DynamoDB.png
+├── dynamodb-items.png
+└── cloudwatch-logs.png
 ```
+
 ---
 
 # Future Improvements
 
-Planned enhancements:
+Possible future enhancements:
 
 - Email notifications using **Amazon SES**
 - Input validation improvements
 - Rate limiting
 - CAPTCHA protection
-- Monitoring using **CloudWatch Alarms**
+- CloudWatch monitoring alarms
 
 ---
 
@@ -189,8 +234,8 @@ Planned enhancements:
 
 AWS Cloud Practitioner | Aspiring Cloud Engineer
 
-Portfolio  
+🌐 Portfolio  
 https://dc61g20ci9ox4.cloudfront.net/
 
-
-
+💻 GitHub  
+https://github.com/Vjayveersinh
