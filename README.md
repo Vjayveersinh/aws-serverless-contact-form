@@ -49,11 +49,11 @@ API Gateway exposes an endpoint that receives the form submission.
 
 ### API Routes
 
-![API Gateway Routes](api-gateway-routes.png)
+![API Gateway Routes](API-Gateway-Routes.png)
 
 ### Lambda Integration
 
-![API Gateway Integration](api-gateway-integration.png)
+![API Gateway Integration](API-Gateway-Integration.png)
 
 ---
 
@@ -61,7 +61,7 @@ API Gateway exposes an endpoint that receives the form submission.
 
 The Lambda function processes incoming requests and stores form data in DynamoDB.
 
-![Lambda Function](lambda.png)
+![Lambda Function](Lambda.png)
 
 Main responsibilities:
 
@@ -77,7 +77,7 @@ Main responsibilities:
 
 Contact form submissions are stored in a DynamoDB table.
 
-![DynamoDB Table](dynamodb.png)
+![DynamoDB Table](DynamoDB.png)
 
 Each submission includes:
 
@@ -142,18 +142,23 @@ Fix: Used the correct **API Gateway invoke URL and route path**.
 ---
 
 # Project Structure
-aws-serverless-contact-form
+```
+aws-serverless-contact-form/
 │
-├── architecture.png
-├── api-gateway-routes.png
-├── api-gateway-integration.png
-├── lambda.png
-├── dynamodb.png
-├── dynamodb-items.png
-├── cloudwatch-logs.png
+├── README.md
 ├── lambda_function.py
-└── README.md
-
+│
+├── architecture/
+│ └── architecture.png
+│
+├── screenshots/
+│ ├── api-gateway-routes.png
+│ ├── api-gateway-integration.png
+│ ├── lambda.png
+│ ├── dynamodb.png
+│ ├── dynamodb-items.png
+│ └── cloudwatch-logs.png
+```
 ---
 
 # Future Improvements
