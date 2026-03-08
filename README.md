@@ -1,6 +1,6 @@
 # AWS Serverless Contact Form
 
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](Architecture.png)
 
 A serverless contact form backend built using **Amazon API Gateway, AWS Lambda, and DynamoDB**.
 
